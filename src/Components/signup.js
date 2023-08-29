@@ -1,20 +1,23 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import image from '../Asset/signup.jpg';
-import { Container, Form ,Card,Row,Col,Button} from "react-bootstrap";
+import { Container, Form ,Card,Row,Col,Button, NavLink} from "react-bootstrap";
 import { useState,useEffect } from "react";
 import { useRef } from "react";
 import './signup.css'
 const Signup =()=>{
+    const history=useHistory();
 const[isError,setIserror]=useState('')
 const[email,setEmail]=useState('')
 const[password,setPassword]=useState('')
 const[confirmPass,setConfirmPass]=useState('');
+const[doLogin,setDoLogin]=useState(false) 
 
 useEffect(()=>{
         // setConfirmPass(e.target.value)
         // const enteredPassword=e.target.value
-        console.log(confirmPass)
-        if(password!=confirmPass){
+        // console.log(confirmPass)
+        if(!doLogin && password!=confirmPass){
             setIserror('password and confirm password should match')
         }else{
             setIserror(null)
@@ -22,11 +25,16 @@ useEffect(()=>{
     
 },[password,confirmPass])
 
+const clickHandler=()=>{
+    setDoLogin(true)
+    setIserror(null)
+}
 const submitHandler=async(e)=>{
     e.preventDefault()
     // if(isError){
     //     return;
     // }
+    
     if(!isError){
         
     
@@ -34,9 +42,16 @@ const user={
     Email:email,
     Password:password,
 }
-    // console.log(user)
+    let url;
+    if(doLogin){
+        
+        url='https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDHE9meBBS2mXVkAt4m-jF_HdmJaA8k-wQ'
+    }else{
+        url='https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDHE9meBBS2mXVkAt4m-jF_HdmJaA8k-wQ'
+    }
+
 try{
-    const response=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDHE9meBBS2mXVkAt4m-jF_HdmJaA8k-wQ',{
+    const response=await fetch(url,{
         method:'POST',
         body:JSON.stringify({
             email:user.Email,
@@ -49,15 +64,24 @@ try{
           }
     })
     if(!response.ok){
-        throw new Error('something went wrong')
-    }else{
-        console.log('user has successfully registered')
+        const data=await response.json()
+        // console.log(data)
+        throw new Error(data.error.message)
+    }
+    const data=await response.json()
+    console.log(data)
+    localStorage.setItem("token",data.idToken)
+    if(doLogin){
+    history.replace("/")
     }
 
-    const data=await response.json()
+    
+// console.log(data)
 } catch(error){
-    console.log(error)
+    console.log(error.message)
+    alert(error.message)
 }
+
 
 
   
@@ -80,14 +104,14 @@ try{
                     <Form onSubmit={submitHandler}  >
                         <Form.Group>
                         
-                        <h4 className="p-3">SignUp</h4>
+                        <h4 className="p-3">{!doLogin ? 'Sign up' : 'Login'}</h4>
                             <Form.Control value={email} type="email" placeholder="Email" className="mb-3" required onChange={(e)=>setEmail(e.target.value)}></Form.Control>
                             <Form.Control value={password} type="password" placeholder="Password" className="mb-3" required onChange={(e)=>setPassword(e.target.value)}></Form.Control>
-                            <Form.Control  type="password" placeholder="Confirm Password" className="mb-3" required onChange={(e)=>setConfirmPass(e.target.value)}></Form.Control>
+                            {!doLogin && <Form.Control  type="password" placeholder="Confirm Password" className="mb-3" required onChange={(e)=>setConfirmPass(e.target.value)}></Form.Control>}
                         
                         </Form.Group>
                         <div className="d-grid gap-2">
-                        <Button type="submit" style={{borderRadius:'50px'}}>Sign Up</Button>
+                        <Button type="submit" style={{borderRadius:'50px'}}>{!doLogin ? 'Sign Up' : 'Login'}</Button>
                         </div>
                     </Form>
                     </Card.Body>
@@ -95,7 +119,7 @@ try{
                 </Card>
                 <Card className="mt-3 shadow ">
                     <Card.Body>
-                        <Card.Text>Have an account? <a href="/">Login</a></Card.Text>
+                        {!doLogin ? <Card.Text>Have an account? <NavLink onClick={clickHandler} style={{color:"blue"}} to="/">Login</NavLink></Card.Text> : <Card.Text>Create an Account <NavLink onClick={(e)=>setDoLogin(false)} style={{color:"blue"}} to="/">Sign up</NavLink></Card.Text>}
                     </Card.Body>
                 </Card>
                 </Col>

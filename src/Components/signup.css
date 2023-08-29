@@ -1,8 +1,8 @@
 .bg{
-    
+    margin: auto;
     background-image: url('../Asset/signup.jpg');
     width: 1525px;
-;
+    
     height: 740px;
     background-size: cover;
     margin-right: 0px;
