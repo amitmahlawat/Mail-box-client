@@ -1,11 +1,13 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import image from '../Asset/signup.jpg';
 import { Container, Form ,Card,Row,Col,Button, NavLink} from "react-bootstrap";
 import { useState,useEffect } from "react";
-import { useRef } from "react";
 import './signup.css'
+import { useDispatch } from "react-redux";
+import { authActions } from "./store";
+import { getfirebaseData } from "./Utils";
 const Signup =()=>{
+    const dispatch=useDispatch();
     const history=useHistory();
 const[isError,setIserror]=useState('')
 const[email,setEmail]=useState('')
@@ -17,7 +19,7 @@ useEffect(()=>{
         // setConfirmPass(e.target.value)
         // const enteredPassword=e.target.value
         // console.log(confirmPass)
-        if(!doLogin && password!=confirmPass){
+        if(!doLogin && password!==confirmPass){
             setIserror('password and confirm password should match')
         }else{
             setIserror(null)
@@ -26,8 +28,10 @@ useEffect(()=>{
 },[password,confirmPass])
 
 const clickHandler=()=>{
+    
     setDoLogin(true)
     setIserror(null)
+    
 }
 const submitHandler=async(e)=>{
     e.preventDefault()
@@ -69,8 +73,11 @@ try{
         throw new Error(data.error.message)
     }
     const data=await response.json()
-    console.log(data)
+    
     localStorage.setItem("token",data.idToken)
+    localStorage.setItem("email",data.email)
+    dispatch(authActions.Login());
+    getfirebaseData()
     if(doLogin){
     history.replace("/")
     }
@@ -101,10 +108,11 @@ try{
                    
                 <Card className="mt-5 shadow " style={{borderRadius:"0"}} >
                     <Card.Body>
-                    <Form onSubmit={submitHandler}  >
+                    <Form onSubmit={submitHandler }>
                         <Form.Group>
                         
-                        <h4 className="p-3">{!doLogin ? 'Sign up' : 'Login'}</h4>
+                        <h4 className="p-3" >{!doLogin ? 'Sign Up' : 'Login'}</h4>
+                        
                             <Form.Control value={email} type="email" placeholder="Email" className="mb-3" required onChange={(e)=>setEmail(e.target.value)}></Form.Control>
                             <Form.Control value={password} type="password" placeholder="Password" className="mb-3" required onChange={(e)=>setPassword(e.target.value)}></Form.Control>
                             {!doLogin && <Form.Control  type="password" placeholder="Confirm Password" className="mb-3" required onChange={(e)=>setConfirmPass(e.target.value)}></Form.Control>}

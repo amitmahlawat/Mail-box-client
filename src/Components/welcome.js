@@ -1,7 +1,9 @@
 import React from "react";
 
-const Welcome=()=>{
 
+
+const Welcome=()=>{
+    
     return (
         <div>
             <h1>Welcome to your Mail Box!! </h1>

@@ -1,9 +1,9 @@
 .bg{
     margin: auto;
     background-image: url('../Asset/signup.jpg');
-    width: 1525px;
+    /* width: 100hh; */
     
-    height: 740px;
+    height: 710px;
     background-size: cover;
     margin-right: 0px;
 }
