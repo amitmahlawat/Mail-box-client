@@ -1,0 +1,17 @@
+.bg{
+    margin: auto;
+    background-image: url('../Asset/signup.jpg');
+    /* width: 100hh; */
+    
+    height: 710px;
+    background-size: cover;
+    margin-right: 0px;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    
+  }
