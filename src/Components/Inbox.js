@@ -1,29 +1,55 @@
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import "./Sent.css";
-import { getfirebaseData } from './Utils';
-
+import { getfirebaseData } from "./Utils";
+import { useHistory } from "react-router-dom";
+import { mailActions } from "./reducers/mailreducer";
+import Store from "./store";
+import firebase from "firebase/app";
+import "firebase/firestore";
+import { deleteDocument, updateEmailProperty } from "./firbase";
+import { Button } from "react-bootstrap";
 function Inbox() {
+  const dispatch = useDispatch;
+  const history = useHistory();
+  const inboxData = useSelector((state) => state.mailReducer.inboxMail);
+  console.log(inboxData, "inbox data");
+  useEffect(() => {
+    getfirebaseData();
+  }, []);
 
-const inboxData=useSelector(state=>state.mailReducer.inboxMail)
-console.log(inboxData)
-useEffect(()=>{
-  getfirebaseData()
-},[])
+  const openMail = (data) => {
+    console.log(data, "sdhhhsdh");
+    updateEmailProperty(data, "isRead", true);
+    
+    getfirebaseData();
+
+    Store.dispatch(mailActions.selectMail(data));
+    history.push("/EmailDetails");
+  };
+  const deleteMail=(data)=>{
+    deleteDocument(data)
+    getfirebaseData();
+  }
+
   return (
     <div className="mail">
-    {
-        inboxData.map((data,index)=>(
-            <div key={index} className="inbox-mail">
-        <h4>{data.to}</h4>
-        <h4>{data.subject}</h4>
-        <p>{data.message}</p>
-        
+      {inboxData.map((data, index) => (
+        <div className="mail_container">
+          {data.isRead ? null : <div className="dot" />}
+        <div key={index} className="inbox-mail" onClick={() => openMail(data)}>
+          
+          <h4>{data.from}</h4>
+          <h4>{data.subject}</h4>
+          <p>{data.message}</p>
+          
         </div>
-        ))
-    }
+        <Button onClick={()=>deleteMail(data)}  variant="btn btn-sm btn-outline-danger delbtn">Del</Button>
+        </div>
+      ))}
     </div>
-  )
+
+  );
 }
 
-export default Inbox
+export default Inbox;

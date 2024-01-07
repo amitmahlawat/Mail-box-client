@@ -3,7 +3,8 @@ import { configureStore, createSlice } from "@reduxjs/toolkit";
 
 const initialState={
     sentMail:[],
-    inboxMail:[]
+    inboxMail:[],
+    selectedMail:null
 }
 const mailSlice= createSlice({
     name:"mailReducer",
@@ -12,7 +13,12 @@ const mailSlice= createSlice({
         
         SentMail(state,action){
             console.log(action,"amit")
-            state.sentMail=action.payload
+            // deletelist.includes(i.id)
+            state.sentMail=action.payload.data.filter((i)=>{
+                if(Object.keys(i).includes("from") && action.payload.useremail==i?.from){
+                    return i
+                }
+            })
         },
         InboxMail(state,action){
             
@@ -21,6 +27,9 @@ const mailSlice= createSlice({
                     return i
                 }
             })      
+        },
+        selectMail(state,action){
+            state.selectedMail=action.payload
         }
     }
 })

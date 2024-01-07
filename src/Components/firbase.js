@@ -1,5 +1,7 @@
 import { getFirestore } from "firebase/firestore"
 import { initializeApp } from 'firebase/app';
+import { collection } from "firebase/firestore";
+import { doc, setDoc,deleteDoc } from "firebase/firestore";
 
 
 const firebaseConfig = {
@@ -15,5 +17,13 @@ const firebaseConfig = {
 
   const app = initializeApp(firebaseConfig)
   const db = getFirestore(app);
+  const updateEmailProperty =async (data, propertyName, newValue=false) => {
+    await setDoc(doc(db,"emails",data.docId),{
+      [propertyName]: newValue
+    },{ merge: true })
+  };
+  const deleteDocument=async(data)=>{
+await deleteDoc(doc(db, "emails", data.docId));
 
-  export {db};
+  }
+  export {db,updateEmailProperty,deleteDocument};

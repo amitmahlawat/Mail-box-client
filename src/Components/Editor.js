@@ -9,16 +9,22 @@ const Texteditor = () => {
 const [to,setTo]=useState('');
 const[subject,setSubject]=useState('');
 const[message,setMessage]=useState('');
-
+// const[isDelete,setIsDelete]=useState(false);
+const[isRead,setIsRead]=useState(false);
 const submitHandler=async(e)=>{
   e.preventDefault()
-  console.log(to,subject,message)
-
+  const from=localStorage.getItem('email')
+  console.log(to,subject,message,from)
+  
+  
   try {
     const docRef = await addDoc(collection(db, "emails"), {
       to,
       subject,
-      message
+      message,
+      from,
+      isRead,
+      id:Math.random().toString(36).substring(2)
     });
     setTo('');
     setSubject('');
@@ -35,7 +41,7 @@ const submitHandler=async(e)=>{
 
   return (
     <div className="m-5 text-start  ">
-      <h1 className="display-6 offset-3 text-start" >Compose Mail</h1>
+      <h2 className="compose" >Compose Mail</h2>
       <Row>
         <Col className="col-5 offset-2">
           <Card>

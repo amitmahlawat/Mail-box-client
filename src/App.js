@@ -9,6 +9,7 @@ import NavBar from './Components/Navbar'
 import { useSelector, UseSelector } from 'react-redux';
 import Sent from './Components/Sent';
 import Inbox from './Components/Inbox';
+import EmailDeatils from './Components/EmailDetails';
 function App() {
 
   const isLoggedin=useSelector(state=>state.authReducer.isLoggedin)
@@ -29,6 +30,9 @@ function App() {
       </Route>
       <Route path="/inbox">
         <Inbox/>
+      </Route>
+      <Route path="/EmailDetails">
+        <EmailDeatils/>
       </Route>
     </div>
   );

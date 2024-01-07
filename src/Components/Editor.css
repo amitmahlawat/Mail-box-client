@@ -1,8 +1,7 @@
-.editor{
- 
-}
+
 
 .compose{
   display: flex;
-  align-items:flex-start;
+  justify-content:start;
+  margin-left: 450px;
 }

@@ -11,15 +11,23 @@ const getfirebaseData = async () => {
 
   const querySnapshot = await getDocs(q);
   let datalist = [];
-  console.log(querySnapshot)
+  console.log(querySnapshot,"firebase data")
   querySnapshot.forEach((doc) => {
     // doc.data() is never undefined for query doc snapshots
-
-    datalist.push(doc.data());
+console.log(doc.id,"doc")
+    datalist.push({
+      ...doc.data(),
+      docId:doc.id
+    });
   });
 
-  Store.dispatch(mailActions.SentMail(datalist));
+console.log(datalist,"datalist")
+
   const userEmail=localStorage.getItem("email")
+  Store.dispatch(mailActions.SentMail({
+    data: datalist,
+    useremail:userEmail
+  }));
   console.log('userEmail',userEmail)
   Store.dispatch(
     mailActions.InboxMail({
