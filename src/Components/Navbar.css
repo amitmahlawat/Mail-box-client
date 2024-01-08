@@ -42,6 +42,7 @@
     font-weight: 700;
     border-bottom: 2px solid grey;
     
+    
 
 }
 .sidebar_options:hover{
@@ -52,9 +53,3 @@ box-shadow: 4px 4px 8px solid rgb(164, 68, 68);
 .active{
     color: rgb(230, 21, 21);
 }
-.dot {
-    width: 20px;
-    height: 20px;
-    background-color: red;
-    border-radius: 50%;
-  }

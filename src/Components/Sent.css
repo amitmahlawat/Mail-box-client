@@ -12,6 +12,7 @@
     align-items: center;
     margin-left: 20px;
     margin-right: 20px;
+    width: 217px
 }
 
 .mail p{
@@ -20,6 +21,7 @@
     align-items: center;
     margin-left: 20px;
     margin-right: 50px;
+    margin-left: 247px;
 }
 .inbox-mail:hover{
   box-shadow: 2px 2px 4px gray;
@@ -28,6 +30,7 @@
 
 .inbox-mail{
     display: flex;
+    ;
     background-color: whitesmoke;
     margin-top: 5px;
     margin-left: 20px;
@@ -50,14 +53,23 @@
     z-index: 2;
     left: 205px;
   }
-  .mail_container{
+.mail_container{
     justify-content: center;
     display: flex;
     align-items: end
   }
 
-  .delbtn{
+.delbtn{
     position: absolute;
     right: 14px;
     z-index: 5;
+  }
+
+.unread h4{
+    font-weight: 800
+    ;
+  }
+  .unread p{
+    font-weight: 800
+    ;
   }

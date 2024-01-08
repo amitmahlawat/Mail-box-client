@@ -37,7 +37,7 @@ function Inbox() {
       {inboxData.map((data, index) => (
         <div className="mail_container">
           {data.isRead ? null : <div className="dot" />}
-        <div key={index} className="inbox-mail" onClick={() => openMail(data)}>
+        <div key={index} className={`inbox-mail ${!data.isRead && "unread"} `} onClick={() => openMail(data)}>
           
           <h4>{data.from}</h4>
           <h4>{data.subject}</h4>

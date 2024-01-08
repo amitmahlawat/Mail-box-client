@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Navbar,Button } from "react-bootstrap";
 import { NavLink, useHistory,Link } from "react-router-dom";
 import { useDispatch, useSelector, UseSelector } from "react-redux";
@@ -8,15 +8,18 @@ import "./Navbar.css";
 
 
 const NavBar=()=>{
-  const [active,setActive]=useState(1)
+  const [active,setActive]=useState(2)
     const dispatch=useDispatch();
     const isLoggedin=useSelector(state=>state.authReducer.isLoggedin)
     const history=useHistory()
+    const inboxData = useSelector((state) => state.mailReducer.inboxMail)
 const logoutHandler=()=>{
     dispatch(authActions.Logout())
  localStorage.clear()
  history.replace("/Login")
 }
+
+
 
     return (
       < >
@@ -52,7 +55,7 @@ const logoutHandler=()=>{
     <div className="sidebar">
       
     <Link className={`sidebar_options ${active==1 && "active"}`} onClick={()=>setActive(1)} to="/editor">Compose</Link>
-      <Link className={`sidebar_options ${active==2 && "active"}`} onClick={()=>setActive(2)} to="/inbox">Inbox</Link>
+      <Link className={`sidebar_options ${active==2 && "active"}`} onClick={()=>setActive(2)} to="/inbox">Inbox {inboxData?.reduce((count, obj) => !obj.isRead ? count + 1 : count, null)}</Link>
       <Link className={`sidebar_options ${active==3 && "active"}`} onClick={()=>setActive(3)} to="/sent">Outbox</Link>
       
 
