@@ -13,17 +13,14 @@ function Inbox() {
   const dispatch = useDispatch;
   const history = useHistory();
   const inboxData = useSelector((state) => state.mailReducer.inboxMail);
-  console.log(inboxData, "inbox data");
+
   useEffect(() => {
     getfirebaseData();
   }, []);
 
   const openMail = (data) => {
-    console.log(data, "sdhhhsdh");
     updateEmailProperty(data, "isRead", true);
-    
     getfirebaseData();
-
     Store.dispatch(mailActions.selectMail(data));
     history.push("/EmailDetails");
   };
